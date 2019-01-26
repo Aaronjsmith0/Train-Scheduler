@@ -1,9 +1,20 @@
-#train-table th, td {
+#train-table th,
+td {
     display: inline-block;
     width: 20%;
 }
 
-.jumbotron {
+.card-body {
+    background-color: red;
+}
+
+.card-header {
     background-color: black;
+    color: white;
+}
+
+.jumbotron {
+    background-image: url("../images/train2.jpg");
+    background-size: cover;
     color: white;
 }

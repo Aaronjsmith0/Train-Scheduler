@@ -14,7 +14,7 @@ $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
     var trainName = $("#train-name-input").val().trim();
     var trainDest = $("#destination-input").val().trim();
-    var trainTime = moment($("#time-input").val().trim(), "HH:mm A").format("X");
+    var trainTime = $("#time-input").val().trim();
     var trainFreq = $("#frequency-input").val().trim();
     var newTrain = {
         name: trainName,
@@ -43,20 +43,22 @@ database.ref().on("child_added", function (childSnapshot) {
     console.log(trainDest);
     console.log(trainTime);
     console.log(trainFreq);
-    var trainStartPretty = moment.unix(trainTime).format("HH:mm");
-    var trainMins = moment().diff(moment(trainTime, "X"), "minutes");
-    console.log(trainMins);
-
-    // Calculate the total billed rate
-    var minsAway;
-    console.log(minsAway);
-
+    var timeConverted = moment(trainTime, "hh:mm").subtract(1, "years");
+    console.log(timeConverted);
+    var diffTime = moment().diff(moment(timeConverted), "minutes");
+    console.log(diffTime);
+    var timeRemaining = diffTime % trainFreq;
+    console.log(timeRemaining);
+    var minutesAway = trainFreq - timeRemaining;
+    console.log(minutesAway);
+    var nextArrival = moment().add(minutesAway, "minutes").format("hh:mm A");
+    console.log(nextArrival);
     var newRow = $("<tr>").append(
         $("<td>").text(trainName),
         $("<td>").text(trainDest),
         $("<td>").text(trainFreq),
-        $("<td>").text(trainStartPretty),
-        $("<td>").text(minsAway),
+        $("<td>").text(nextArrival),
+        $("<td>").text(minutesAway),
     );
     $("#train-table > tbody").append(newRow);
 });
